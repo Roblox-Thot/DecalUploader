@@ -1,6 +1,7 @@
 # DecalUploader
 Simple mass Roblox decal uploader
 
+Has a comment for every line so you know whats going on
 
 # Required modules
 `lxml`, `requests`, and `BeautifulSoup`

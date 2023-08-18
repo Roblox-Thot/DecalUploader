@@ -58,7 +58,7 @@ class DecalClass():
 
 ROBLOSECURITY = input("Cookie: ")
 
-if "Y" input("Clear Out.txt? (Y/N): "):
+if "Y" in input("Clear Out.txt? (Y/N): "):
     with open("Out.txt",'w') as out:
         pass # Lazy clear lmao
 

@@ -2,6 +2,9 @@ import requests
 import os
 from bs4 import BeautifulSoup
 from time import sleep
+import urllib3
+
+urllib3.disable_warnings()
 
 class DecalClass():
     def __init__(self, cookie, location, name):
@@ -45,8 +48,9 @@ class DecalClass():
                 print("rate limited waiting 40 sec")
                 sleep(40)
                 response = self.upload()
-            elif "Banned" in response.text:
-                input("banned/warned pls check")
+            elif "Banned" in response.text or "not-approved" in response.url:
+                input("banned/warned pls check (press enter to continue)")
+                response = self.upload()
             return response
         except:
             print("error is making request")
@@ -54,13 +58,19 @@ class DecalClass():
 
 ROBLOSECURITY = input("Cookie: ")
 
+if "Y" input("Clear Out.txt? (Y/N): "):
+    with open("Out.txt",'w') as out:
+        pass # Lazy clear lmao
+
 directory = 'files'
 for filename in os.listdir(directory):
     f = os.path.join(directory, filename)
     a = DecalClass(ROBLOSECURITY, f, filename).upload()
-    print(a.status_code)
     url = str(a.url)
     if "&uploadedId=" in url:
-        with open("Out.txt",'w') as f:
+        with open("Out.txt",'a') as out:
             url = url.replace("https://www.roblox.com/build/upload?assetTypeId=13&uploadedId=","https://roblox.com/library/")
-            f.write(f'{url}\n')
+            out.write(f'{url}\n')
+            print(a.status_code, url)
+    else:
+        print(a.status_code, url)

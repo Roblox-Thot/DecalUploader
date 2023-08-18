@@ -10,3 +10,6 @@ Simple mass Roblox decal uploader
 2. Make a `files` folder next to `main.py`
 3. Run `main.py` and wait for it to stop
 4. All decal links will be in Out.txt next to `main.py`
+
+# Note
+This will not work on <13 accounts as I don't care to add support for them and they just seem to error right now 🤷‍♀️

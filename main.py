@@ -21,8 +21,8 @@ class DecalClass():
         homeurl= 'https://www.roblox.com/build/upload' #this is the upload endpoint
         response = self.goose.get(homeurl, verify=False)
         if "not-approved" in response.url:
-            input("banned/warned pls check (enter to close)")
-            exit()
+            input("banned/warned pls check (press enter to continue)")
+            return self.getToken()
         try:
             soup = BeautifulSoup(response.text, "lxml")
             veri = soup.find("input", {"name" : "__RequestVerificationToken"}).attrs["value"] #parse out the verification token from the HTML

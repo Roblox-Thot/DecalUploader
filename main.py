@@ -20,7 +20,7 @@ class DecalClass():
     def getToken(self): #get verification token function
         homeurl= 'https://www.roblox.com/build/upload' #this is the upload endpoint
         response = self.goose.get(homeurl, verify=False)
-        if "Banned" in response.text or "not-approved" in response.url:
+        if "not-approved" in response.url:
             input("banned/warned pls check (enter to close)")
             exit()
         try:
@@ -38,8 +38,6 @@ class DecalClass():
         data = {
             '__RequestVerificationToken': self.getToken(),
             'assetTypeId': '13', #we use assetTypeId '13' because 13 is the id for Decals
-            'isOggUploadEnabled': 'True',
-            'isTgaUploadEnabled': 'True',
             
             'onVerificationPage': "False",
             "captchaEnabled": "True",
@@ -51,7 +49,7 @@ class DecalClass():
                 print("rate limited waiting 40 sec")
                 sleep(40)
                 response = self.upload()
-            elif "Banned" in response.text or "not-approved" in response.url:
+            elif "not-approved" in response.url:
                 input("banned/warned pls check (press enter to continue)")
                 response = self.upload()
             return response

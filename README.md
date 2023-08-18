@@ -14,4 +14,6 @@ Simple mass Roblox decal uploader
 # Note
 This will not work on <13 accounts as I don't care to add support for them and they just seem to error right now 🤷‍♀️
 
+I am also unsure of the RateLimits so I set it to 40s since that *normally* seems to work
+
 # Credits to some DevForum post for a good chunk of this code lmao

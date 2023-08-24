@@ -1,6 +1,9 @@
 # DecalUploader
 Simple mass Roblox decal uploader
 
+> [!NOTE]\
+> This will not work on <13 accounts as I don't care to add support for them and they just seem to error right now 🤷‍♀️
+
 Has a comment for every line so you know whats going on
 
 # Required modules

@@ -1,10 +1,10 @@
+# WIP fix
+
 # DecalUploader
 Simple mass Roblox decal uploader
 
 > [!WARNING]\
 > This may not work on <13 accounts
-
-Has a comment for every line so you know whats going on
 
 # Required modules
 `lxml`, `requests`, and `BeautifulSoup`

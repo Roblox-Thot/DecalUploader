@@ -1,6 +1,7 @@
 import requests
 import urllib.parse
 from time import sleep
+from random import randint
 
 class DecalClass():
     def __init__(self, cookie:str, location:str, name:str):
@@ -52,12 +53,13 @@ class DecalClass():
                 }
         PData = self.request.post(self.uploadURL,headers=headers,data=data)
         if "not-approved" in PData.url:
-            input("banned/warned pls check (press enter to continue)") # Pause... are you banned/warned... thats cringe
+            input("banned/warned pls check (press enter to retry upload)") # Pause... are you banned/warned... thats cringe
             PData = self.upload() # Retry upload after the user hits enter
         elif 'retry-after' in PData.headers:
-            pausetime = int(PData.headers["retry-after"])+3
+            pausetime = int(PData.headers["retry-after"]) + 1 # Get the retry header and wait 1 extra sec
             print(f'Rate limited for {pausetime} seconds... (Waiting)')
             sleep(pausetime)
+            PData = self.upload() # Retry upload after Rate limit (:skull:)
         return PData
 
 if "__main__" in __name__:
@@ -71,10 +73,8 @@ if "__main__" in __name__:
 
     directory = 'files'
     for filename in os.listdir(directory):
-        f = os.path.join(directory, filename)
-        a = DecalClass(ROBLOSECURITY, f, filename).upload()
-        print(a)
-        a = a.json()
+        f = os.path.join(directory, filename) # get the img path
+        a = DecalClass(ROBLOSECURITY, f, filename).upload().json() # Create the upload and upload then get the json data
         if a["Success"]:
             with open("Out.csv",'a') as out:
                 out.write(f'{filename},{a["AssetId"]},{a["BackingAssetId"]}\n')
@@ -82,3 +82,4 @@ if "__main__" in __name__:
             os.remove(f)
         else:
             print(filename, a["Message"])
+        sleep(randint(0,2)) # Give Roblox a random break

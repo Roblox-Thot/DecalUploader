@@ -1,5 +1,6 @@
 import requests
 import urllib.parse
+from time import sleep
 
 class DecalClass():
     def __init__(self, cookie:str, location:str, name:str):
@@ -14,7 +15,6 @@ class DecalClass():
         self.request.cookies.update({'.ROBLOSECURITY': cookie}) # Setting ROBLOSECURITY cookie
         self.request.headers.update({"User-Agent": "RobloxStudio/WinInet RobloxApp/0.601.0.6010507 (GlobalDist; RobloxDirectDownload)"})# Sets a the UA to the Roblox Studio
         self.location = location
-        self.name = name
         self.uploadURL = f'https://data.roblox.com/data/upload/json?assetTypeId=13&name={urllib.parse.quote(name)}&description=a'
 
     def getCSRFToken(self): # Roblox's cringe token system
@@ -28,18 +28,33 @@ class DecalClass():
         token = self.getCSRFToken()
         
         with open(self.location, 'rb') as dick: # Open image as bytes
-            data = dick.read()
-        files = {'file': ('image.png', data, 'image/png')} # Add image as files data
+            data = "asd"
 
         headers = {"Requester": "Client",
                     "X-CSRF-TOKEN": token
                 }
-        return self.request.post(self.uploadURL,headers=headers,data=data).json()
+        PData = self.request.post(self.uploadURL,headers=headers,data=data)
+        if "not-approved" in PData.url:
+            input("banned/warned pls check (press enter to continue)") # Pause... are you banned/warned... thats cringe
+            PData = self.upload() # Retry upload after the user hits enter
+        elif 'retry-after' in PData.headers:
+            pausetime = int(PData.headers["retry-after"])
+            print(f'Rate limited for {pausetime+1} seconds... (Waiting)')
+            sleep(pausetime+1)
+        return PData
+        '''
+        Return data includes
+        'Success' if it was Uploaded correctly
+        'AssetId' which is the Decal ID
+        'BackingAssetId' which is the Image ID
+        'Message' used only if Success is false
+        '''
 
 
 
 if "__main__" in __name__:
-    import os
     ROBLOSECURITY = input("Cookie: ")
-    a = DecalClass(ROBLOSECURITY, "IMG_6887.jpeg", "test").upload()
-    print(a)
+    while True:
+        a = DecalClass(ROBLOSECURITY, "IMG_6887.jpeg", "test").upload()
+        print(a.text)
+        print(a.headers)

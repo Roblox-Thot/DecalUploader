@@ -2,7 +2,7 @@
 Simple mass Roblox decal uploader
 
 > [!NOTE]\
-> You need `requests` if you don't already
+> You need to intall `requests` module if you don't have it already
 
 # How to use
 1. Put `main.py` in a folder

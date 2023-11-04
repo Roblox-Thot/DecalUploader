@@ -4,19 +4,20 @@ from time import sleep
 from random import randint
 
 class DecalClass():
-    def __init__(self, cookie:str, location:str, name:str):
+    def __init__(self, cookie:str, location:str, name:str, description:str = "Studio"):
         """Set up the DecalClass
 
         Args:
             cookie (String): The cookie to the account you are uploading to
             location (String): Path to the image
             name (String): Name of the decal
+            description (String): Description of the decal
         """
         self.request = requests.Session() # Make a request session so its easier later
         self.request.cookies.update({'.ROBLOSECURITY': cookie}) # Setting ROBLOSECURITY cookie
         self.request.headers.update({"User-Agent": "RobloxStudio/WinInet RobloxApp/0.601.0.6010507 (GlobalDist; RobloxDirectDownload)"})# Sets a the UA to the Roblox Studio
         self.location = location
-        self.uploadURL = f'https://data.roblox.com/data/upload/json?assetTypeId=13&name={urllib.parse.quote(name)}&description=a'
+        self.uploadURL = f'https://data.roblox.com/data/upload/json?assetTypeId=13&name={urllib.parse.quote(name)}&description={urllib.parse.quote(description)}'
 
     def getCSRFToken(self):
         """Gets Roblox's CSRF token for uploading

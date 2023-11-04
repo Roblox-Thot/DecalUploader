@@ -24,11 +24,12 @@ class DecalClass():
         Returns:
             string: CSRF token header
         """
-        token = self.request.post("https://auth.roblox.com/v2/login").headers['x-csrf-token']
-        if token:
+        if token := self.request.post("https://auth.roblox.com/v2/login").headers[
+            'x-csrf-token'
+        ]:
             return token
-        else:
-            print("Please log in (X-csrf-token fail)"); exit() # Lazy hack mate
+        print("Please log in (X-csrf-token fail)")
+        exit() # Lazy hack mate
     
     def upload(self):
         """Attempts to upload the decal

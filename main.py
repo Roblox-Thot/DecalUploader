@@ -17,7 +17,12 @@ class DecalClass():
         self.location = location
         self.uploadURL = f'https://data.roblox.com/data/upload/json?assetTypeId=13&name={urllib.parse.quote(name)}&description=a'
 
-    def getCSRFToken(self): # Roblox's cringe token system
+    def getCSRFToken(self):
+        """Gets Roblox's CSRF token for uploading
+
+        Returns:
+            string: CSRF token header
+        """
         token = self.request.post("https://auth.roblox.com/v2/login").headers['x-csrf-token']
         if token:
             return token
@@ -25,10 +30,22 @@ class DecalClass():
             print("Please log in (X-csrf-token fail)"); exit() # Lazy hack mate
     
     def upload(self):
+        """Attempts to upload the decal
+
+        Returns:
+            JSON: Contains the following>
+                'Success' if it was Uploaded correctly
+
+                'AssetId' which is the Decal ID
+
+                'BackingAssetId' which is the Image ID
+
+                'Message' used only if Success is false
+        """
         token = self.getCSRFToken()
         
         with open(self.location, 'rb') as dick: # Open image as bytes
-            data = "asd"
+            data = dick.read()
 
         headers = {"Requester": "Client",
                     "X-CSRF-TOKEN": token
@@ -38,23 +55,30 @@ class DecalClass():
             input("banned/warned pls check (press enter to continue)") # Pause... are you banned/warned... thats cringe
             PData = self.upload() # Retry upload after the user hits enter
         elif 'retry-after' in PData.headers:
-            pausetime = int(PData.headers["retry-after"])
-            print(f'Rate limited for {pausetime+1} seconds... (Waiting)')
-            sleep(pausetime+1)
+            pausetime = int(PData.headers["retry-after"])+3
+            print(f'Rate limited for {pausetime} seconds... (Waiting)')
+            sleep(pausetime)
         return PData
-        '''
-        Return data includes
-        'Success' if it was Uploaded correctly
-        'AssetId' which is the Decal ID
-        'BackingAssetId' which is the Image ID
-        'Message' used only if Success is false
-        '''
-
-
 
 if "__main__" in __name__:
+    import os
     ROBLOSECURITY = input("Cookie: ")
-    while True:
-        a = DecalClass(ROBLOSECURITY, "IMG_6887.jpeg", "test").upload()
-        print(a.text)
-        print(a.headers)
+
+    clear = input("Clear Out.csv? (Y/N): ")
+    if "y" in clear.lower():
+        with open("Out.csv",'w') as clr:
+            clr.write("FileName,DecalId,ImageId")
+
+    directory = 'files'
+    for filename in os.listdir(directory):
+        f = os.path.join(directory, filename)
+        a = DecalClass(ROBLOSECURITY, f, filename).upload()
+        print(a)
+        a = a.json()
+        if a["Success"]:
+            with open("Out.csv",'a') as out:
+                out.write(f'{filename},{a["AssetId"]},{a["BackingAssetId"]}\n')
+            print(f'Uploaded {filename} (AssetID: {a["AssetId"]})')
+            os.remove(f)
+        else:
+            print(filename, a["Message"])

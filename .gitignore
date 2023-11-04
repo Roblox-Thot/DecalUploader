@@ -1,1 +1,3 @@
 *.jpeg
+files/*
+out.*

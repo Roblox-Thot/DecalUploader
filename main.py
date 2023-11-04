@@ -69,7 +69,7 @@ if "__main__" in __name__:
     clear = input("Clear Out.csv? (Y/N): ")
     if "y" in clear.lower():
         with open("Out.csv",'w') as clr:
-            clr.write("FileName,DecalId,ImageId")
+            clr.write("FileName,DecalId,ImageId\n") # CSV headers
 
     directory = 'files'
     for filename in os.listdir(directory):

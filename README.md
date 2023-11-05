@@ -22,16 +22,16 @@ the return of Upload will be one of the following JSON datasets
 Successful upload:
 ```json
 {
-    "Success": true,
-    "AssetId": 1,
-    "BackingAssetId": 2
+    "Success": true, If the upload worked
+    "AssetId": 1, Decal ID
+    "BackingAssetId": 2 Image ID
 }
 ```
 
 Failed to upload:
 ```json
 {
-    "Success": false
-    "Message": "The name or description contains inappropriate text"
+    "Success": false, If the upload worked
+    "Message": "The name or description contains inappropriate text" The reason why it failed
 }
 ```

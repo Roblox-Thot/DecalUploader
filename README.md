@@ -5,7 +5,33 @@ Simple mass Roblox decal uploader
 > You need to intall `requests` module if you don't have it already
 
 # How to use
-1. Put `main.py` in a folder
-2. Make a `files` folder next to `main.py`
-3. Run `main.py` and wait for it to stop
-4. All decal links will be in Out.csv next to `main.py`
+There are 2 ways you can use this
+## 1. Auto folder uploading
+1. Put `DecalUploader.py` in a folder
+2. Make a `files` folder next to `DecalUploader.py`
+3. Run `DecalUploader.py` and wait for it to stop
+4. All decal links will be in `Out.csv` next to `DecalUploader.py`
+## 2. As a module
+```python
+from DecalUploader import DecalClass
+
+reply = DecalClass("cookie","fileLocation","uploadName","uploadDescription").upload()
+```
+the return of Upload will be one of the following JSON datasets
+
+Successful upload:
+```json
+{
+    "Success": true,
+    "AssetId": 1,
+    "BackingAssetId": 2
+}
+```
+
+Failed to upload:
+```json
+{
+    "Success": false
+    "Message": "The name or description contains inappropriate text"
+}
+```

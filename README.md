@@ -19,7 +19,7 @@ reply = DecalClass("cookie","fileLocation","uploadName","uploadDescription").upl
 ```
 the return of Upload will be one of the following JSON datasets
 
-Successful upload:
+### Successful upload:
 ```json
 {
     "Success": true, If the upload worked
@@ -28,7 +28,7 @@ Successful upload:
 }
 ```
 
-Failed to upload:
+### Failed to upload:
 ```json
 {
     "Success": false, If the upload worked

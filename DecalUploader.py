@@ -3,8 +3,40 @@ import urllib.parse
 from time import sleep
 from random import randint
 
+classes = {
+    "Image": 1,
+    "TShirt": 2,
+    "Audio": 3,
+    "Mesh": 4,
+    "Lua": 5,
+    "Hat": 8,
+    "Place": 9,
+    "Model": 10,
+    "Shirt": 11,
+    "Pants": 12,
+    "Decal": 13,
+    "Head": 17,
+    "Face": 18,
+    "Gear": 19,
+    "Badge": 21,
+    "Animation": 24,
+    "Torso": 27,
+    "RightArm": 28,
+    "LeftArm": 29,
+    "LeftLeg": 30,
+    "RightLeg": 31,
+    "Package": 32,
+    "GamePass": 34,
+    "Plugin": 38,
+    "MeshPart": 40,
+    "Video": 62,
+    "FontFamily": 73,
+    "MoodAnimation": 78,
+    "DynamicHead": 79
+}
+
 class DecalClass():
-    def __init__(self, cookie:str, location:str, name:str, description:str = "Studio"):
+    def __init__(self, cookie:str, location:str, name:str, description:str = "Studio", type:str = "Decal"):
         """Set up the DecalClass
 
         Args:
@@ -13,11 +45,12 @@ class DecalClass():
             name (String): Name of the decal
             description (String): Description of the decal
         """
+        self.uploadType = classes[type.lower()]
         self.request = requests.Session() # Make a request session so its easier later
         self.request.cookies.update({'.ROBLOSECURITY': cookie}) # Setting ROBLOSECURITY cookie
         self.request.headers.update({"User-Agent": "RobloxStudio/WinInet RobloxApp/0.601.0.6010507 (GlobalDist; RobloxDirectDownload)"})# Sets a the UA to the Roblox Studio
         self.location = location
-        self.uploadURL = f'https://data.roblox.com/data/upload/json?assetTypeId=13&name={urllib.parse.quote(name)}&description={urllib.parse.quote(description)}'
+        self.uploadURL = f'https://data.roblox.com/data/upload/json?assetTypeId={self.uploadType}&name={urllib.parse.quote(name)}&description={urllib.parse.quote(description)}'
 
     def getCSRFToken(self):
         """Gets Roblox's CSRF token for uploading
@@ -33,9 +66,9 @@ class DecalClass():
         exit() # Lazy hack mate
     
     def upload(self):
-        """Attempts to upload the decal
+        """Attempts to upload the Asset
 
-        Returns:
+        Returns: (Only documented for decals)
             JSON: Contains the following>
                 'Success' if it was Uploaded correctly
 

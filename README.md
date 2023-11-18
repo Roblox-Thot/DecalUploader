@@ -35,3 +35,5 @@ the return of Upload will be one of the following JSON datasets
     "Message": "The name or description contains inappropriate text" The reason why it failed
 }
 ```
+
+![image](https://github.com/Roblox-Thot/DecalUploader/assets/67937010/06943b8d-fd15-4cea-9311-a824fe3ca897)

@@ -79,7 +79,11 @@ class DecalClass():
 
 if "__main__" in __name__:
     import os
-    ROBLOSECURITY = input("Cookie: ")
+    import sys
+    if len(sys.argv) < 2:
+        ROBLOSECURITY = input("Cookie: ")
+    else:
+        ROBLOSECURITY = sys.argv[1]
 
     clear = input("Clear Out.csv? (Y/N): ")
     if "y" in clear.lower():

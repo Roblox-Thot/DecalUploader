@@ -1,3 +1,5 @@
 *.jpeg
 files/*
 out.*
+test.*
+*test*

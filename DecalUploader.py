@@ -2,6 +2,7 @@ import requests
 import urllib.parse
 from time import sleep
 from random import randint
+from bs4 import BeautifulSoup
 
 class DecalClass():
     global classes
@@ -46,9 +47,9 @@ class DecalClass():
         exit() # Lazy hack mate
     
     def upload(self):
-        """Attempts to upload the Asset
+        """Attempts to upload the decal
 
-        Returns: (Only documented for decals)
+        Returns:
             JSON: Contains the following>
                 'Success' if it was Uploaded correctly
 
@@ -61,13 +62,27 @@ class DecalClass():
         token = self.getCSRFToken()
         
         with open(self.location, 'rb') as dick: # Open image as bytes
-            data = dick.read()
+            data = dick.read() + os.urandom(69)
 
         headers = {"Requester": "Client",
                     "X-CSRF-TOKEN": token
                 }
         PData = self.request.post(self.uploadURL,headers=headers,data=data)
-        if "not-approved" in PData.url:
+        if "Re-activate My Account" in PData.text:
+            print("Warned attempting to fix")
+            try:
+                # Get the form data to post
+                soup = BeautifulSoup(PData.content, 'html.parser')
+                verification_token = soup.find('input', {'name': '__RequestVerificationToken'})['value']
+                punishmentId = soup.find('input', {'name': 'punishmentId'})['value']
+
+                # Post the data
+                self.request.post("https://www.roblox.com/not-approved/reactivate", data={'__RequestVerificationToken':verification_token,'punishmentId':punishmentId}, headers={'Content-Type':'application/x-www-form-urlencoded'})
+
+                PData = self.upload()
+            except:
+                input("failed to reactivate")
+        elif "not-approved" in PData.url:
             input("banned/warned pls check (press enter to retry upload)") # Pause... are you banned/warned... thats cringe
             PData = self.upload() # Retry upload after the user hits enter
         elif 'retry-after' in PData.headers:
@@ -92,13 +107,16 @@ if "__main__" in __name__:
 
     directory = 'files'
     for filename in os.listdir(directory):
-        f = os.path.join(directory, filename) # get the img path
-        a = DecalClass(ROBLOSECURITY, f, os.urandom(2)).upload().json() # Create the upload and upload then get the json data
-        if a["Success"]:
-            with open("Out.csv",'a') as out:
-                out.write(f'{filename},{a["AssetId"]},{a["BackingAssetId"]}\n')
-            print(f'Uploaded {filename} (AssetID: {a["AssetId"]})')
-            os.remove(f)
-        else:
-            print(filename, a["Message"])
-        sleep(randint(0,1)) # Give Roblox a random break
+        try:
+            f = os.path.join(directory, filename) # get the img path
+            a = DecalClass(ROBLOSECURITY, f, os.urandom(2), "I love it").upload().json() # Create the upload and upload then get the json data
+            if a["Success"]:
+                with open("Out.csv",'a') as out:
+                    out.write(f'{filename},{a["AssetId"]},{a["BackingAssetId"]}\n')
+                print(f'Uploaded {filename} (AssetID: {a["AssetId"]})')
+                os.remove(f)
+            else:
+                print(filename, a["Message"])
+            sleep(randint(0,2)) # Give Roblox a random break
+        except:
+            pass # something somewhere is broken idc to debug rn

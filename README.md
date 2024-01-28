@@ -6,6 +6,8 @@ Simple mass Roblox decal uploader
 
 # How to use
 There are 2 ways you can use this
+
+If you use it for a project you can credit me or not I don't really care tbh
 ## 1. Auto folder uploading
 1. Put `DecalUploader.py` in a folder
 2. Make a `files` folder next to `DecalUploader.py`

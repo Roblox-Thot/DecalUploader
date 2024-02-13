@@ -38,7 +38,7 @@ if '__main__' in __name__:
             clr.write('FileName,DecalId,ImageId\n') # CSV headers
 
     directory = 'out'
-    cook_num, cookies_num = 0, len(cookies)
+    cook_num, cookies_num = 0, len(cookies)-1
     a=''
     for filename in os.listdir(directory):
         try:

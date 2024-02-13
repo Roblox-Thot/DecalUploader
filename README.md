@@ -15,7 +15,11 @@ There are 2 ways you can use this
 2. Make a `files` folder next to `DecalUploader.py`
 3. Run `DecalUploader.py` and wait for it to stop
 4. All decal links will be in `Out.csv` next to `DecalUploader.py`
-## 2. As a module
+## Mass cookie upload
+1. Download both `.py` files and put them in the same folder
+2. Put cookies into a txt file called "cookies"
+3. Then just run MassCookieUpload.py
+## 3. As a module
 ```python
 from DecalUploader import DecalClass
 

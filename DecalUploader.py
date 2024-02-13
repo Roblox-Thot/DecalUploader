@@ -1,4 +1,5 @@
 import requests
+import json
 import urllib.parse
 from time import sleep
 from random import randint
@@ -84,8 +85,8 @@ class DecalClass():
             except:
                 input('failed to reactivate')
         elif 'not-approved' in post_data.url:
-            input('banned/warned pls check (press enter to retry upload)') # Pause... are you banned/warned... thats cringe
-            post_data = self.upload() # Retry upload after the user hits enter
+            print('\n\nbanned')
+            return 'BANNED'
         elif 'retry-after' in post_data.headers:
             pause_time = int(post_data.headers['retry-after']) + 1 # Get the retry header and wait 1 extra sec
             print(f'Rate limited for {pause_time} seconds... (Waiting)')
@@ -114,6 +115,10 @@ if '__main__' in __name__:
         try:
             f = os.path.join(directory, filename) # get the img path
             a = DecalClass(ROBLOSECURITY, f, os.urandom(2), 'Decal').upload().json() # Create the upload and upload then get the json data
+            if 'BANNED' in a:
+                print('Cookie was banned.\n')
+                ROBLOSECURITY = input('Cookie: ')
+                a = DecalClass(ROBLOSECURITY, f, os.urandom(2), 'Decal').upload().json() # Create the upload and upload then get the json data
             if a['Success']:
                 with open('Out.csv','a') as out:
                     out.write(f'{filename},{a["AssetId"]},{a["BackingAssetId"]}\n')

@@ -32,7 +32,7 @@ def send_discord_message(webhook,name_value,decal_value,img_value):
 if '__main__' in __name__:
     import os
 
-    clear = 'n'#input('Clear Out.csv? (Y/N): ')
+    clear = input('Clear Out.csv? (Y/N): ')
     if 'y' in clear.lower():
         with open('Out.csv','w') as clr:
             clr.write('FileName,DecalId,ImageId\n') # CSV headers

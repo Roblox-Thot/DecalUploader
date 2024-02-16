@@ -18,7 +18,7 @@ class DecalClass():
         'MeshPart': 40
     }
 
-    def __init__(self, cookie:str, location:str, name:str, description:str = 'Studio', type:str = 'Decal'):
+    def __init__(self, cookie:str, location:str, name:str, description:str = 'Studio', type:str = 'Decal', proxy:dict={}):
         '''Set up the DecalClass
 
         Args:
@@ -33,6 +33,7 @@ class DecalClass():
         self.request.headers.update({'User-Agent': 'RobloxStudio/WinInet RobloxApp/0.601.0.6010507 (GlobalDist; RobloxDirectDownload)'})# Sets a the UA to the Roblox Studio
         self.location = location
         self.upload_url = f'https://data.roblox.com/data/upload/json?assetTypeId={self.upload_type}&name={urllib.parse.quote(name)}&description={urllib.parse.quote(description)}'
+        self.proxy = proxy
 
     def getCSRFToken(self):
         '''Gets Roblox's CSRF token for uploading
@@ -40,7 +41,7 @@ class DecalClass():
         Returns:
             string: CSRF token header
         '''
-        if token := self.request.post('https://auth.roblox.com/v2/login').headers[
+        if token := self.request.post('https://auth.roblox.com/v2/login', proxies=self.proxy).headers[
             'x-csrf-token'
         ]:
             return token
@@ -69,7 +70,7 @@ class DecalClass():
                     'Requester': 'Client',
                     'X-CSRF-TOKEN': token
                 }
-        post_data = self.request.post(self.upload_url,headers=headers,data=data)
+        post_data = self.request.post(self.upload_url,headers=headers,data=data, proxies=self.proxy)
         if 'Re-activate My Account' in post_data.text:
             print('Warned attempting to fix')
             try:
@@ -79,7 +80,9 @@ class DecalClass():
                 punishment_id = soup.find('input', {'name': 'punishmentId'})['value']
 
                 # Post the data
-                self.request.post('https://www.roblox.com/not-approved/reactivate', data={'__RequestVerificationToken':verification_token,'punishmentId':punishment_id}, headers={'Content-Type':'application/x-www-form-urlencoded'})
+                data = {'__RequestVerificationToken':verification_token,'punishmentId':punishment_id}
+                header = {'Content-Type':'application/x-www-form-urlencoded'}
+                self.request.post('https://www.roblox.com/not-approved/reactivate', data=data, headers=header,proxies=self.proxy)
 
                 post_data = self.upload()
             except:

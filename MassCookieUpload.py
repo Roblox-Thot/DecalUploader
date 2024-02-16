@@ -1,8 +1,8 @@
 # Edit the config here
 global WEBHOOK
 WEBHOOK = '' # Put a webhook to log uploads
-PROXIES = False
-PROXY_FILE = 'proxies.txt'
+PROXIES = False # Enables proxies on roblox request (won't bypass rate limits, that's based on accounts)
+PROXY_FILE = 'proxies.txt' # where to read the proxies from
 RANDOMCOOKIE = False # Picks a random cookie for every upload (Can cause problems with big cookie files)
 
 if PROXIES:
@@ -72,7 +72,7 @@ if '__main__' in __name__:
                 prox = {}
 
             if RANDOMCOOKIE:
-                choice(cookies).strip()
+                ROBLOSECURITY = choice(cookies).strip()
             else:
                 ROBLOSECURITY = cookies[cook_num].strip()
             f = os.path.join(directory, filename) # get the img path

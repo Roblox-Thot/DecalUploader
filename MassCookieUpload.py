@@ -61,7 +61,7 @@ if '__main__' in __name__:
                 with open('Out.csv','a') as out:
                     out.write(f'{filename},{a["AssetId"]},{a["BackingAssetId"]}\n')
                 print(f'Uploaded {filename} (AssetID: {a["AssetId"]})')
-                if WEBHOOK ~= '':
+                if WEBHOOK != '':
                     send_discord_message(WEBHOOK,filename,a['AssetId'],a['BackingAssetId'])
                 os.remove(f)
             else:

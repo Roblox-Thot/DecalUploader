@@ -3,4 +3,5 @@ files/*
 out.*
 test.*
 *test*
-*prox*
+proxies.txt
+cookies.txt

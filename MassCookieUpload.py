@@ -1,13 +1,30 @@
+# Edit the config here
+global WEBHOOK
 WEBHOOK = '' # Put a webhook to log uploads
+PROXIES = False
+PROXY_FILE = 'proxies.txt'
+RANDOMCOOKIE = False # Picks a random cookie for every upload (Can cause problems with big cookie files)
 
-import requests
-import json
+if PROXIES:
+    try:
+        proxy_list = open(PROXY_FILE).readlines()
+        proxy_list = [line.strip() for line in proxy_list]
+    except:
+        print(f'Failed to opend "{PROXY_FILE}" turning off proxy support')
+        PROXIES = False # Failed to read file so turn proxy support off
+
+# Rest of the script
+from json import dumps
+from requests import post
 from time import sleep
-from random import randint
+from random import randint, shuffle, choice
 from DecalUploader import DecalClass
+
+if PROXIES: shuffle(proxy_list)
 
 global ROBLOSECURITY
 cookies = open("cookies.txt", 'r+').readlines()
+cookies = [line.strip() for line in cookies]
 
 def send_discord_message(webhook,name_value,decal_value,img_value):
     decal_value = int(decal_value)
@@ -27,7 +44,10 @@ def send_discord_message(webhook,name_value,decal_value,img_value):
 
     payload = {"embeds": [embed_data]}
 
-    requests.post(webhook, data=json.dumps(payload), headers={"Content-Type": "application/json"})
+    status = post(webhook, data=dumps(payload), headers={"Content-Type": "application/json"}).text
+    if 'Invalid Webhook Token' in status or 'Unknown Webhook' in status:
+        global WEBHOOK
+        WEBHOOK = '' # Webhook doesn't exist so don't keep sending stuff
 
 if '__main__' in __name__:
     import os
@@ -42,11 +62,24 @@ if '__main__' in __name__:
     a=''
     for filename in os.listdir(directory):
         try:
-            ROBLOSECURITY = cookies[cook_num].strip()
+            if PROXIES:
+                proxy = choice(proxy_list).strip()
+                prox = { 
+                    "http"  : proxy,
+                    "https" : proxy,
+                    }
+            else:
+                prox = {}
+
+            if RANDOMCOOKIE:
+                choice(cookies).strip()
+            else:
+                ROBLOSECURITY = cookies[cook_num].strip()
             f = os.path.join(directory, filename) # get the img path
             a = DecalClass(ROBLOSECURITY, f, 'Decal', 'Decal').upload() # Create the upload and upload then get the json data
             while 'BANNED' in a:
                 cook_num += 1
+                if RANDOMCOOKIE: cookies.remove(ROBLOSECURITY)
                 if cook_num > cookies_num:
                     print("Out of cookies\nExiting...")
                     exit()

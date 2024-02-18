@@ -1,4 +1,4 @@
-## Working on V2 right now
+## [Working on V2 right now](https://github.com/Roblox-Thot/DecalUploaderV2)
 
 # DecalUploader
 Simple mass Roblox decal uploader

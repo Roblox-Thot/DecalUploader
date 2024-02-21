@@ -1,3 +1,7 @@
+# NOT FINISHED
+# THIS IS STILL THE SAME AS
+# MASSCOOKIEUPLOAD.PY RIGHT NOW
+
 # Edit the config here
 global WEBHOOK
 WEBHOOK = '' # Put a webhook to log uploads

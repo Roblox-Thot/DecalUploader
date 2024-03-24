@@ -1,4 +1,4 @@
-## [Working on V2 right now](https://github.com/Roblox-Thot/DecalUploaderV2)
+From now on this will only get fixes, if the API goes down, too bad just use [Roblox-Thot/DecalUploaderV2](https://github.com/Roblox-Thot/DecalUploaderV2)
 
 # DecalUploader
 Simple mass Roblox decal uploader

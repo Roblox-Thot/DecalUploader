@@ -5,7 +5,7 @@ Simple mass Roblox decal uploader
 
 If you use it for a project you can credit me or not I don't really care tbh
 
-If you want an ID checker that works with the output check [MilkKoun/Roblox-Ids-Checker](https://github.com/MilkKoun/Roblox-Ids-Checker)
+If you want an ID checker that works with the output check [YeffirSkey/Roblox-Ids-Checker](https://github.com/YeffirSkey/Roblox-Ids-Checker)
 
 > [!NOTE]\
 > You need to intall `requests` module if you don't have it already

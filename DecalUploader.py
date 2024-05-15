@@ -19,7 +19,7 @@ class DecalClass():
         'MeshPart': 40
     }
 
-    def __init__(self, cookie:str, location:str, name:str, description:str = 'Studio', type:str = 'Decal', proxy:dict={}):
+    def __init__(self, cookie:str, location:str, name:str, description:str = 'Studio', type:str = 'Decal', proxy: dict = None):
         '''Set up the DecalClass
 
         Args:
@@ -28,6 +28,8 @@ class DecalClass():
             name (String): Name of the decal
             description (String): Description of the decal
         '''
+        if proxy is None: proxy = {}
+        
         self.upload_type = classes[type]
         self.request = requests.Session() # Make a request session so its easier later
         self.request.cookies.update({'.ROBLOSECURITY': cookie}) # Setting ROBLOSECURITY cookie
@@ -63,7 +65,7 @@ class DecalClass():
                 'Message' used only if Success is false
         '''
         token = self.getCSRFToken()
-        
+
         with open(self.location, 'rb') as fp: # Open image as bytes
             data = fp.read() + os.urandom(69)
 
@@ -86,7 +88,7 @@ class DecalClass():
                 self.request.post('https://www.roblox.com/not-approved/reactivate', data=data, headers=header,proxies=self.proxy)
 
                 post_data = self.upload()
-            except:
+            except Exception:
                 input('failed to reactivate')
         elif 'not-approved' in post_data.url:
             print('\n\nbanned')
@@ -98,17 +100,14 @@ class DecalClass():
             post_data = self.upload() # Retry upload after Rate limit (:skull:)
         return post_data
 
+import contextlib
 if '__main__' in __name__:
     import os
     import sys
     try:
         ROBLOSECURITY = open('cookie.txt').readline() # Because this fucker is so lazy ig https://v3rm.net/threads/roblox-decal-tools.144/post-2702
-    except:
-        if len(sys.argv) < 2:
-            ROBLOSECURITY = input('Cookie: ')
-        else:
-            ROBLOSECURITY = sys.argv[1]
-
+    except Exception:
+        ROBLOSECURITY = input('Cookie: ') if len(sys.argv) < 2 else sys.argv[1]
     clear = input('Clear Out.csv? (Y/N): ')
     if 'y' in clear.lower():
         with open('Out.csv','w') as clr:
@@ -116,7 +115,7 @@ if '__main__' in __name__:
 
     directory = 'files'
     for filename in os.listdir(directory):
-        try:
+        with contextlib.suppress(Exception):
             f = os.path.join(directory, filename) # get the img path
             a = DecalClass(ROBLOSECURITY, f, os.urandom(2), 'Decal').upload().json() # Create the upload and upload then get the json data
             if 'BANNED' in a:
@@ -131,6 +130,3 @@ if '__main__' in __name__:
             else:
                 print(filename, a['Message'])
             sleep(randint(0,2)) # Give Roblox a random break
-        except Exception as e:
-            #print(e)
-            pass # something somewhere is broken idc to debug rn

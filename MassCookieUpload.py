@@ -3,14 +3,14 @@ global WEBHOOK
 WEBHOOK = '' # Put a webhook to log uploads
 PROXIES = False # Enables proxies on roblox request (won't bypass rate limits, that's based on accounts)
 PROXY_FILE = 'proxies.txt' # where to read the proxies from
-RANDOMCOOKIE = False # Picks a random cookie for every upload (Can cause problems with big cookie files)
+RANDOM_COOKIE = False # Picks a random cookie for every upload (Can cause problems with big cookie files)
 
 if PROXIES:
     try:
         proxy_list = open(PROXY_FILE).readlines()
         proxy_list = [line.strip() for line in proxy_list]
-    except:
-        print(f'Failed to opend "{PROXY_FILE}" turning off proxy support')
+    except Exception:
+        print(f'Failed to opened "{PROXY_FILE}" turning off proxy support')
         PROXIES = False # Failed to read file so turn proxy support off
 
 # Rest of the script
@@ -71,7 +71,7 @@ if '__main__' in __name__:
             else:
                 prox = {}
 
-            if RANDOMCOOKIE:
+            if RANDOM_COOKIE:
                 ROBLOSECURITY = choice(cookies).strip()
             else:
                 ROBLOSECURITY = cookies[cook_num].strip()
@@ -79,7 +79,7 @@ if '__main__' in __name__:
             a = DecalClass(ROBLOSECURITY, f, 'Decal', 'Decal').upload() # Create the upload and upload then get the json data
             while 'BANNED' in a:
                 cook_num += 1
-                if RANDOMCOOKIE: cookies.remove(ROBLOSECURITY)
+                if RANDOM_COOKIE: cookies.remove(ROBLOSECURITY)
                 if cook_num > cookies_num:
                     print("Out of cookies\nExiting...")
                     exit()
@@ -101,5 +101,4 @@ if '__main__' in __name__:
                 print(filename, a['Message'])
             sleep(randint(0,2)) # Give Roblox a random break
         except Exception as e:
-            print(e)
-            pass # something somewhere is broken idc to debug rn
+            print(e) # something somewhere is broken idc to debug rn
